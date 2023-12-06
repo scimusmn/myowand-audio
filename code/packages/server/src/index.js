@@ -8,10 +8,14 @@ const { ReadlineParser } = require('@serialport/parser-readline');
 const port = new SerialPort({ path: 'COMXXX', baudRate: 115200 });
 const listeners = [];
 const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
-parser.on('data', data => listeners.forEach(l => {
+parser.on('data', data => {
   const arr = data.split(' ');
-  l.send(arr[arr.length-1])
-}));
+  const value = arr[arr.length-1];
+  console.log(value);
+  listeners.forEach(l => {
+    l.send(value);
+  });
+});
 
 
 
